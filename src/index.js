@@ -6,6 +6,11 @@ import cors from "cors";
 
 // Arrancar modulos
 const app = express();
+
+// Carga de archivos estáticos (VUE)
+app.use(express.static('public'))
+
+// CORS
 app.use(cors());
 
 // Crear variables auxiliares
