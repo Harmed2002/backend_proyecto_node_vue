@@ -1,0 +1,9 @@
+POST http://127.0.0.1:3000/api/auth/registro
+Content-Type: application/json
+
+{
+    "nombre": "Juan",
+    "apellidos": "Medina",
+    "email": "juan@email.com",
+    "password": "juan123456"
+}

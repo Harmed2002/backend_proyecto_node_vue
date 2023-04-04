@@ -1,0 +1,24 @@
+1. Crear una cuenta en (Git, Gitlab, Bitbucket)
+
+2. Arrancar con github:
+    - crear un archivo (.gitignore)
+    - crear un archivo (Readme.md)
+
+3. Si ya existe un repositorio (Clonar):
+    Se requiere la direccion del repositorio
+    > git clone /direccion/
+
+4. Si no existe el repositorio (Iniciar uno nuevo):
+    > git init
+
+5. Crear un repositorio remoto en Github y enlazarlo con el local
+    > git remote add origin https://github.com/<name_usuario>/<name_repositorio>
+
+6. Preparar los archivos a subir:
+    > git add .
+
+7. Hago commit y pongo una obs.:
+    > git commit -m "Proyecto de arranque de Node"
+
+8. Subo los archivos:
+    > git push origin
