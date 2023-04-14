@@ -13,10 +13,11 @@ POST http://127.0.0.1:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "santy@mail.com",
-    "password": "12345"
+    "email": "juan@email.com",
+    "password": "juan123456"
 }
 
 
 ### PERFIL
 GET http://127.0.0.1:3000/api/auth/perfil
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb3JyZW8iOiJqdWFuQGVtYWlsLmNvbSIsImlkIjo0LCJ0aW1lIjoiMjAyMy0wNC0xNFQwMTo1MjozNS4yODJaIiwidGllbXBvX2V4cGlyYWNpb24iOiIxaCIsImlhdCI6MTY4MTQzNzE1NSwiZXhwIjoxNjgxNDQwNzU1fQ.f0mWqbI2nFHC7snHVaAP0guMsUlBbz8emaix2bDVEsQ

@@ -1,73 +1,97 @@
-import models from "../models"
+import models, { sequelize } from "../models"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import { tiempo_expiracion, codigo_secreto } from './../config/config'
 
 export default {
-    async registro(req, res){
-        const { nombre, apellidos, email, password } = req.body;
+	async registro(req, res) {
+		const { nombre, apellidos, email, password } = req.body;
 
-        if(email){
-            let user = await models.User.findOne({
-                where: {
-                    email: email
-                }
-            })
+		if (email) {
+			let user = await models.User.findOne({
+				where: {
+					email: email
+				}
+			})
 
-            // Verifico que el usuario ya esté registrado
-            if(!user){
-                // Cifrar el password
-                const hash = await bcrypt.hash(password, 12);
+			// Verifico que el usuario ya esté registrado
+			if (!user) {
+				// Cifrar el password
+				const hash = await bcrypt.hash(password, 12);
 
-                await models.User.create({nombre, apellidos, email, password: hash})
-                return res.status(200).send({
-                    mensaje: "Usuario registrado correctamente"
-                })
-            }else{
-                res.status(200).send({mensaje: "El correo ya existe"})
-            }
-        }else{
-            res.status(200).send({mensaje: "El correo es obligatorio"})
-        }
-    },
+				await models.User.create({ nombre, apellidos, email, password: hash })
+				return res.status(200).send({
+					mensaje: "Usuario registrado correctamente"
+				})
+			} else {
+				res.status(200).send({ mensaje: "El correo ya existe" })
+			}
+		} else {
+			res.status(200).send({ mensaje: "El correo es obligatorio" })
+		}
+	},
 
-    async login(req, res){
-        const { email, password } = req.body;
-        console.log(`password:  ${password}`);
-        if(email){
-            // Cifra el password
-            /*const hash = await bcrypt.hash(password, 12);
-            console.log(`hash:  ${hash}`);*/
+	async login(req, res) {
+		const { email, password } = req.body;
 
-            let user = await models.User.findOne({
-                where: {
-                    email: email,
-                    //password: hash
-                }
-            })
+		if (email) {
+			// Cifra el password
+			//const hash = await bcrypt.hash(password, 12);
 
-            // Verifico que el usuario exista
-            if(user){
-                //valid = bcrypt.compare(password, user.password);
-                bcrypt.compare(password, user.password).then(function(result) {
-                    if(result){
-                        res.status(200).send({mensaje: "Usuario logueado correctamente"})
-                    }else{
-                        res.status(200).send({mensaje: "Usuario o Clave incorrectos"})
-                    }
-                });
+			let user = await models.User.findOne({
+				where: {
+					email: email,
+					//password: hash
+				}
+			}).then((user) => {
+				//console.log(user);
 
-            }else{
-                res.status(200).send({mensaje: "Usuario o Clave incorrectos"})
-            }
+				// Verifico que el usuario exista
+				if (user) {
+					//valid = bcrypt.compare(password, user.password);
+					bcrypt.compare(password, user.password).then(function (result) {
+						if (result) {
+							//res.json({ mensaje: "Bienvenido", data: user, error: false })
+							//res.status(200).send({mensaje: "Usuario logueado correctamente"})
 
-        }else{
-            res.status(200).send({mensaje: "El correo es obligatorio"})
-        }
-    },
+							// generar el token (jwt)
+							const payload = {
+								correo: user.email,
+								id: user.id,
+								time: new Date(),
+								tiempo_expiracion: tiempo_expiracion
+							}
 
-    perfil(req, res){
-        
-    },
-    logout(req, res){
-        
-    }
+							let token = jwt.sign(payload, codigo_secreto, {
+								expiresIn: tiempo_expiracion
+							});
+
+							res.json({ usuario: payload, access_token: token, error: false })
+
+						} else {
+							res.json({ mensaje: "Usuario o Clave incorrectos", error: true })
+							//res.status(200).send({mensaje: "Usuario o Clave incorrectos"})
+						}
+					});
+
+				} else {
+					//res.json({ mensaje: "Usuario o Clave incorrectos", error: true })
+					res.status(200).send({mensaje: "Usuario o Clave incorrectos"})
+				}
+			}).catch(error => {
+				console.log(error);
+				res.json({ mensaje: "Error al autenticar", error: true })
+			})
+
+		} else {
+			res.status(200).send({ mensaje: "El correo es obligatorio" })
+		}
+	},
+
+	perfil(req, res) {
+
+	},
+	logout(req, res) {
+
+	}
 }
