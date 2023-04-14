@@ -69,8 +69,8 @@ export default {
 							res.json({ usuario: payload, access_token: token, error: false })
 
 						} else {
-							res.json({ mensaje: "Usuario o Clave incorrectos", error: true })
-							//res.status(200).send({mensaje: "Usuario o Clave incorrectos"})
+							//res.json({ mensaje: "Usuario o Clave incorrectos", error: true })
+							res.status(200).send({mensaje: "Usuario o Clave incorrectos"})
 						}
 					});
 
@@ -89,8 +89,11 @@ export default {
 	},
 
 	perfil(req, res) {
-
+		res.status(200).json({
+			message: "Congrats! You can now accesss the super secret resource",
+		});
 	},
+
 	logout(req, res) {
 
 	}
