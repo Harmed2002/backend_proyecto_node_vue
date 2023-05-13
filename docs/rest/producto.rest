@@ -1,0 +1,36 @@
+### Listar Categorias
+GET http://127.0.0.1:3000/api/categoria
+
+### Listar Productos
+GET http://127.0.0.1:3000/api/producto?page=3&limit=2
+
+### Guardar Producto
+POST http://127.0.0.1:3000/api/producto
+Content-Type: application/json
+
+{
+    "nombre": "TECLADO",
+    "stock": 24,
+    "precio": 25000,
+    "descripcion": "Teclado marca Dell",
+    "categoriaId": 1
+
+}
+
+### Mostrar Producto
+GET http://127.0.0.1:3000/api/producto/1
+
+
+### Actualizar Producto
+PUT http://127.0.0.1:3000/api/producto/1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "nombre": "TECLADO INALAMBRICO",
+    "stock": 20,
+    "precio": 75000,
+    "descripcion": "Teclado marca Dell",
+    "categoriaId": 4
+
+}

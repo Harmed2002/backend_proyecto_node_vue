@@ -8,7 +8,7 @@ import cors from "cors";
 const app = express();
 
 // Carga de archivos estáticos (VUE)
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 // CORS
 app.use(cors());
